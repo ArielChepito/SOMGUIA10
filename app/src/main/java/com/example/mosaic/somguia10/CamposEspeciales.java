@@ -27,8 +27,11 @@ public class CamposEspeciales extends AppCompatActivity implements Validator.Val
 
 
     @NotEmpty
+    @Min(value = 6, message = "Nota minima para aprobar 6")
+    @Max(value = 10, message = "Nota maxima para aprobar 10")
     EditText nota;
 
+    @NotEmpty
     @Password(min = 6, scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,
             message = "El password debe contener mínimo 6 caracteres, símbolos, valores numéricos y letras")
     EditText password;
@@ -38,13 +41,14 @@ public class CamposEspeciales extends AppCompatActivity implements Validator.Val
     @ConfirmPassword(message = "El password no coincide")
     private EditText confirmPasswordEditText;
 
-
-    @Url//Mostrará el mensaje original
-            EditText url;
+    @NotEmpty
+    @Url//Mostrará el mensaje origin
+    EditText url;
 
     @NotEmpty
     EditText otrosDatos;
 
+    @NotEmpty
     @Min(value = 1, message = "Edad mínima 1")
     @Max(value = 120, message = "Edad máxima 120")
     EditText edad;
@@ -59,8 +63,8 @@ public class CamposEspeciales extends AppCompatActivity implements Validator.Val
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        email = (EditText) findViewById(R.id.email);
-
+        email = (EditText) findViewById(R.id.emailSari);
+        nota = (EditText) findViewById(R.id.notaSari);
         password = (EditText) findViewById(R.id.password);
 
         confirmPasswordEditText = (EditText) findViewById(R.id.confirmPassword);

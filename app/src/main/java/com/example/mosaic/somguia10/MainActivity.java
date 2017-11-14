@@ -15,7 +15,7 @@ package com.example.mosaic.somguia10;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText nombres, apellidos, carnet, dui,telefono,nit;
+    EditText nombres, apellidos, carnet, dui,telefono,nit, email,nota;
 
     Button verificar;
 
@@ -31,20 +31,26 @@ public class MainActivity extends AppCompatActivity {
         nit = (EditText) findViewById(R.id.nit);
         telefono= (EditText) findViewById(R.id.telefono);
         verificar= (Button) findViewById(R.id.verificar);
+        email = (EditText) findViewById(R.id.email);
+        nota = (EditText) findViewById(R.id.nota);
 
 
         verificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(
-                        validateNameField(nombres) &&
-                                validateNameField(apellidos) &&
-                                validateCarnet(carnet) &&
-                                validateDui(dui) &&
-                                validateNIT(nit) &&
-                                validateTelefono(telefono)
 
-                        ){
+                        validateNameField(nombres) &&
+                        validateNameField(apellidos) &&
+                        validateCarnet(carnet) &&
+                        validateDui(dui) &&
+                        validateNIT(nit) &&
+                        validateTelefono(telefono) &&
+                        validateEmail(email) &&
+                        validateNota(nota)
+
+
+                    ){
                     Toast.makeText(MainActivity.this,"Sus campos han sido validados",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -69,60 +75,66 @@ public class MainActivity extends AppCompatActivity {
     private boolean validateDui(EditText editText){
         //03532126-1
         String regexString = "^\\d{8}-\\d{1}$";
-
-        if(editText.getText().length()==0) {
-            okField(editText);
-            return true;
+        if(editText.getText().length()!=0) {
+            if(editText.getText().toString().matches(regexString)){
+                okField(editText);
+            }else {
+                errorField(editText);
+                editText.setError("DUI Incorrecto. ");
+                return false;
+            }
         }
-
-        if(editText.getText().toString().matches(regexString)){
-            okField(editText);
-        }else {
+        else
+        {
             errorField(editText);
-            editText.setError("DUI Incorrecto. Puedes dejarlo en blando.");
+            editText.setError("Campo obligatorio");
             return false;
-        }
 
+        }
         return true;
     }
-
     private boolean validateTelefono(EditText editText){
         //03532126-1
         String regexString = "^\\d{4}-\\d{4}$";
-
-        if(editText.getText().length()==0) {
-            okField(editText);
-            return true;
+        if(editText.getText().length()!=0) {
+            if(editText.getText().toString().matches(regexString)){
+                okField(editText);
+            }else {
+                errorField(editText);
+                editText.setError("telefono Incorrecto.");
+                return false;
+            }
         }
-
-        if(editText.getText().toString().matches(regexString)){
-            okField(editText);
-        }else {
+        else
+        {
             errorField(editText);
-            editText.setError("telefono Incorrecto. Puedes dejarlo en blando.");
+            editText.setError("Campo vacio.");
             return false;
         }
-
         return true;
     }
-
-
     private boolean validateNIT(EditText editText){
         //03532126-1
         String regexString = "^\\d{4}-\\d{6}-\\d{3}-\\d{1}$";
 
-        if(editText.getText().length()==0) {
-            okField(editText);
-            return true;
+        if(editText.getText().length()!=0) {
+            if(editText.getText().toString().matches(regexString)){
+                okField(editText);
+            }else {
+                errorField(editText);
+                editText.setError("NIT Incorrecto. .");
+                return false;
+            }
+        }
+        else
+        {
+            errorField(editText);
+            editText.setError("Campo vacio.");
+            return false;
+
         }
 
-        if(editText.getText().toString().matches(regexString)){
-            okField(editText);
-        }else {
-            errorField(editText);
-            editText.setError("NIT Incorrecto. Puedes dejarlo en blando.");
-            return false;
-        }
+
 
         return true;
     }
@@ -130,10 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validateNameField(EditText editText){
         String regexString = "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$";
-
-
         Pattern r = Pattern.compile(regexString);
-
         Matcher m = r.matcher(editText.getText());
         if(m.matches()){
             okField(editText);
@@ -143,10 +152,53 @@ public class MainActivity extends AppCompatActivity {
             editText.setError("Caracteres no válidos");
             return false;
         }
-
         return true;
     }
 
+    private boolean validateEmail(EditText editText){
+
+        String regexString = "[^@]+@[^@]+\\.[a-zA-Z]{2,}";
+        Pattern r = Pattern.compile(regexString);
+        Matcher m = r.matcher(editText.getText());
+        if(m.matches()){
+            okField(editText);
+
+        }else{
+            errorField(editText);
+            editText.setError("Correo invalido");
+            return false;
+        }
+        return true;
+    }
+    private boolean validateNota(EditText editText){
+
+
+        if(editText.getText().length()!=0) {
+
+            int nota =  Integer.parseInt(editText.getText().toString());
+            if(nota >5 && nota < 11)
+            {
+
+                okField(editText);
+
+            }
+            else
+            {
+                errorField(editText);
+                editText.setError("Reprobado o nota invalida");
+                return false;
+
+            }
+        }else
+        {
+            errorField(editText);
+            editText.setError("Campo vacio ");
+            return false;
+
+        }
+
+        return true;
+    }
 
 
 
